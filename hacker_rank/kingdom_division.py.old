@@ -1,0 +1,157 @@
+# !/usr/bin/python3
+# https://www.hackerrank.com/challenges/kingdom-division/problem
+
+import sys
+from collections import defaultdict
+
+def get_end_groups(city_map):
+    group = 0
+    for city, info in city_map.items():
+        if len(info['connections']) != 1 or info['group']:
+            continue
+
+        connected_city = info['connections'][0]
+
+        # mark this city as an end city
+        # if connected city is part of group, add this city to that group
+        if connected_city['group']:
+            info['group'] = True
+        # if connected city doesn't have a group, create a new group and add both cities to group
+        else:
+            group += 1
+            info['group'] = True
+            connected_city['group'] = True
+    return group
+
+
+def get_connected_twos(city_map):
+    group = 0
+    total_connected_twos = 0
+    for city in city_map.values():
+        if len(city['connections']) != 2 or city['group']:
+            continue
+
+        # look for connected cities that also have 2 connections
+        connected_twos = [x for x in city['connections'] if len(x['connections']) == 2]
+        if not connected_twos:
+            continue
+
+        connected_twos.append(city)
+        group += 1
+        for connected_two in connected_twos:
+            total_connected_twos += 1
+            connected_two['group'] = True
+    return group, total_connected_twos
+
+
+def get_cities_two_steps_away(city_map, start):
+    visited = [start]
+
+    for city in start['connections']:
+        if city in visited:
+            continue
+        visited.append(city)
+        for extended_city in city['connections']:
+            if extended_city in visited:
+                continue
+            visited.append(extended_city)
+            yield extended_city
+
+def get_extended_twos(city_map):
+    group = 0
+    total_extended_twos = 0
+    single_twos = 0
+    big_cities = 0
+    for city in city_map.values():
+        if city['group']:
+            continue
+
+        if len(city['connections']) != 2:
+            big_cities += 1
+            city['group'] = True
+            continue
+
+        extended_twos = [city]
+        for extended_city in get_cities_two_steps_away(city_map, city):
+            if len(extended_city['connections']) != 2:
+                continue
+            extended_twos.append(extended_city)
+
+        if len(extended_twos) == 1:
+            single_twos += 1
+            city['group'] = True
+            continue
+
+        group += 1
+        for extended_two in extended_twos:
+            total_extended_twos += 1
+            extended_two['group'] = True
+
+    return single_twos, group, total_extended_twos, big_cities
+
+
+CITY_MAP = {}
+if len(sys.argv) > 1:
+    with open(sys.argv[1]) as input_file:
+        NUM_CITIES = int(input_file.readline().strip())
+        for i in range(1, NUM_CITIES + 1):
+            CITY_MAP[str(i)] = defaultdict(list)
+        for line in input_file:
+            CITY_A, CITY_B = line.strip().split(' ')
+            CITY_MAP[CITY_A]['name'] = CITY_A
+            CITY_MAP[CITY_A]['group'] = False
+            CITY_MAP[CITY_A]['connections'].append(CITY_MAP[CITY_B])
+            CITY_MAP[CITY_B]['name'] = CITY_B
+            CITY_MAP[CITY_B]['group'] = False
+            CITY_MAP[CITY_B]['connections'].append(CITY_MAP[CITY_A])
+else:
+    NUM_CITIES = int(input().strip())
+    for i in range(1, NUM_CITIES + 1):
+        CITY_MAP[str(i)] = defaultdict(list)
+
+    while True:
+        try:
+            CITY_A, CITY_B = input().strip().split(' ')
+            CITY_MAP[CITY_A]['name'] = CITY_A
+            CITY_MAP[CITY_A]['group'] = False
+            CITY_MAP[CITY_A]['connections'].append(CITY_MAP[CITY_B])
+            CITY_MAP[CITY_B]['name'] = CITY_B
+            CITY_MAP[CITY_B]['group'] = False
+            CITY_MAP[CITY_B]['connections'].append(CITY_MAP[CITY_A])
+        except (EOFError, ValueError):
+            break
+
+SINGLE_GROUPS = get_end_groups(CITY_MAP)
+TWOS_GROUPS, NUM_CONNECTED_TWOS = get_connected_twos(CITY_MAP)
+SINGLE_TWOS_GROUPS, EXTENDED_TWOS_GROUPS, NUM_EXTENDED_TWOS, BIG_CITIES= get_extended_twos(CITY_MAP)
+
+TOTAL_GROUPS = SINGLE_GROUPS + NUM_CONNECTED_TWOS + NUM_EXTENDED_TWOS + SINGLE_TWOS_GROUPS + BIG_CITIES
+TOTAL_TWOS_GROUPS = TWOS_GROUPS + EXTENDED_TWOS_GROUPS + SINGLE_TWOS_GROUPS
+
+TOTAL_COMBOS = 2 ** TOTAL_GROUPS
+NUM_WAYS = TOTAL_COMBOS
+
+print('total combos', NUM_WAYS)
+if TOTAL_TWOS_GROUPS > 0:
+    NUM_WAYS -= (TOTAL_COMBOS * TOTAL_TWOS_GROUPS) / 4
+
+print('removed 1/4 for 2s', NUM_WAYS)
+if NUM_CONNECTED_TWOS > 1:
+    NUM_WAYS -= (TOTAL_COMBOS * (NUM_CONNECTED_TWOS - TWOS_GROUPS)) / 8
+
+print('removed 1/8 for c-twos', NUM_WAYS)
+if NUM_EXTENDED_TWOS > 1:
+    NUM_WAYS -= (TOTAL_COMBOS * (NUM_EXTENDED_TWOS - EXTENDED_TWOS_GROUPS)) * 3 / 16
+
+print('removed 3/16 for x-twos', NUM_WAYS)
+print(int(NUM_WAYS))
+# TODO: Remove everything after this
+import pprint
+print('singles', SINGLE_GROUPS)
+print('twos', TWOS_GROUPS, 'num twos', NUM_CONNECTED_TWOS)
+print('x-twos', EXTENDED_TWOS_GROUPS, 'num x-twos', NUM_EXTENDED_TWOS)
+print('big cities', BIG_CITIES)
+print('single twos', SINGLE_TWOS_GROUPS)
+print('total groups', TOTAL_GROUPS)
+print('total twos groups', TOTAL_TWOS_GROUPS)
+# pprint.pprint(CITY_MAP)
