@@ -1,6 +1,9 @@
 # !/bin/python3
 # http://www.adventofcode.com/2017/day/1
 
+from utils import read_input
+
+
 def get_total(captcha, offset):
     total = 0
     length = len(captcha)
@@ -11,6 +14,6 @@ def get_total(captcha, offset):
     return total
 
 
-CAPTCHA = input().strip()
+CAPTCHA = read_input()
 print('part a:', get_total(CAPTCHA, 1))
 print('part b:', get_total(CAPTCHA, int(len(CAPTCHA) / 2)))
