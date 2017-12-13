@@ -36,4 +36,4 @@ def dont_get_caught(firewall):
 
 FIREWALL = create_firewall(read_input(val_type=int, separator=': '))
 print('part a:', get_severity(FIREWALL))
-print('part a:', dont_get_caught(FIREWALL))
+print('part b:', dont_get_caught(FIREWALL))
