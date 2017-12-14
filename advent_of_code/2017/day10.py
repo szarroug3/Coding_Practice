@@ -11,6 +11,7 @@ def get_reversed_subsection(nums, start, end):
 
 
 def get_hash(lengths, num_loops=1):
+    lengths = get_ascii(lengths)
     nums = [x for x in range(256)]
     len_nums = len(nums)
     i = 0
@@ -54,13 +55,13 @@ def get_knot_hash(lengths):
     return knot_hash
 
 
-LENGTHS = read_input()
+if __name__ == '__main__':
+    LENGTHS = read_input()
+    
+    try:
+        HASH = get_hash([int(L.strip()) for L in LENGTHS.split(',')])
+        print('part a:', HASH[0] * HASH[1])
+    except:
+        pass
 
-try:
-    HASH = get_hash([int(L.strip()) for L in LENGTHS.split(',')])
-    print('part a:', HASH[0] * HASH[1])
-except:
-    pass
-
-
-print('part b:', get_knot_hash(get_ascii(LENGTHS)))
+    print('part b:', get_knot_hash(LENGTHS))
