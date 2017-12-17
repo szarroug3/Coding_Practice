@@ -1,5 +1,5 @@
 # !/bin/python3
-# http://www.adventofcode.com/2017/day/14
+# http://www.adventofcode.com/2017/day/15
 
 from utils import read_input
 
@@ -35,6 +35,6 @@ def get_match_count(num_a, num_b, mod_criteria=False):
 
 
 if __name__ == '__main__':
-    NUM_A, NUM_B = [int(x[-1]) for x in read_input(separator=' ')]
+    NUM_A, NUM_B = [int(INFO[-1]) for INFO in read_input(separator=' ')]
     print('part a:', get_match_count(NUM_A, NUM_B))
     print('part b:', get_match_count(NUM_A, NUM_B, mod_criteria=True))
