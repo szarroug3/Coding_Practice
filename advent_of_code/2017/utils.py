@@ -5,7 +5,7 @@ import sys
 import inspect
 
 
-def read_input(val_type=None, separator=None):
+def read_input(val_type=None, separator=None, ignore_empty=True):
     if len(sys.argv) > 1:
         fname = sys.argv[1]
         if not os.path.exists(fname):
@@ -27,7 +27,10 @@ def read_input(val_type=None, separator=None):
     with open(fname) as f:
         inp = []
         for line in f.readlines():
-            line = line.strip()
+            if ignore_empty:
+                line = line.strip()
+            else:
+                line = line.replace('\n', '').replace('\r', '')
             if separator:
                 values = line.split(separator)
             else:
