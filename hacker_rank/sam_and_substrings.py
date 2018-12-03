@@ -6,4 +6,4 @@ total = 0
 for i in range(0, len(string) + 1):
     for j in range(i + 1, len(string) + 1):
         total += int(string[i:j])
-print(total)
+print(total % 1000000007)
