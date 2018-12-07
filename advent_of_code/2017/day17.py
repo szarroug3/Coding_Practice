@@ -1,23 +1,17 @@
 # !/bin/python3
 # http://www.adventofcode.com/2017/day/17
 
+from collections import deque
 from utils import read_input
 
 
 def spinlock(skip, stop_val=2017, search_val=2017):
-    c_buffer = [0]
-    i = 1
-    current_pos = 0
+    c_buffer = deque([0])
 
-    while i <= stop_val:
-        insert_at = ((current_pos + skip) % len(c_buffer)) + 1
-        c_buffer.insert(insert_at, i)
-        current_pos = insert_at
-        i += 1
-        if i % SKIP == 0:
-            print(c_buffer)
-            input()
-    return c_buffer[c_buffer.index(search_val) % len(c_buffer) + 1]
+    for i in range(1, stop_val + 1):
+        c_buffer.rotate(-skip-1)
+        c_buffer.insert(0, i)
+    return c_buffer[(c_buffer.index(search_val) + 1) % len(c_buffer)]
 
 
 if __name__ == '__main__':
