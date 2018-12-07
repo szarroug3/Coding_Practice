@@ -1,5 +1,5 @@
 # !/bin/python3
-# http://www.adventofcode.com/2017/day/21
+# http://www.adventofcode.com/2017/day/22
 
 from copy import deepcopy
 from utils import read_input
