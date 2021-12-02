@@ -38,7 +38,7 @@ func ReadFileAsRuneSlices(filename string, delimiter string) ([][]rune, error) {
 	return split, nil
 }
 
-func ReadFileAsStringSlices(filename string, delimiter string) ([][]string, error) {
+func ReadFileAsStringSlices(filename string, delimiter string, lineDelimiter string) ([][]string, error) {
 	split := make([][]string, 0)
 
 	data, err := ReadFileAsSlices(filename, delimiter)
@@ -48,7 +48,7 @@ func ReadFileAsStringSlices(filename string, delimiter string) ([][]string, erro
 
 	for _, line := range data {
 		curr := make([]string, 0)
-		for _, char := range strings.Split(line, "") {
+		for _, char := range strings.Split(line, lineDelimiter) {
 			char = strings.TrimSpace(char)
 
 			if char != "" {
