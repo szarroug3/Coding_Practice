@@ -3,9 +3,9 @@
 package main
 
 import (
-	"utils/utils"
-	"os"
 	"fmt"
+	"os"
+	"utils/utils"
 )
 
 func PartA(measurements []int, result chan interface{}) {
@@ -43,22 +43,22 @@ func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Input filename required.")
 		return
-    }
+	}
 
-    data, err := utils.ReadFileAsSlices(os.Args[1], "\n")
-    if err != nil {
-    	fmt.Println(err)
-    	return
-    }
+	data, err := utils.ReadFileAsSlices(os.Args[1], "\n")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-    measurements := utils.ConvertToInts(data)
+	measurements := utils.ConvertToInts(data)
 
-    a := make(chan interface{})
-    b := make(chan interface{})
+	a := make(chan interface{})
+	b := make(chan interface{})
 
-   	go PartA(measurements, a)
-   	go PartB(measurements, b)
+	go PartA(measurements, a)
+	go PartB(measurements, b)
 
-    fmt.Println("Part A:", <-a)
-    fmt.Println("Part B:", <-b)
+	fmt.Println("Part A:", <-a)
+	fmt.Println("Part B:", <-b)
 }
