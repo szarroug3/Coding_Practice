@@ -31,7 +31,7 @@ public class Day01 {
    *
    * @return    the number of times value in array increase
    */
-  public int partA() {
+  public int partOne() {
     int count = 0;
 
     for (int i = 1; i < this.data.size(); i++) {
@@ -49,7 +49,7 @@ public class Day01 {
    *
    * @return    the number of times value in array increase
    */
-  public int partB() {
+  public int partTwo() {
     int count = 0;
     int currWindow = this.data.get(0) + this.data.get(1) + this.data.get(2);
 
