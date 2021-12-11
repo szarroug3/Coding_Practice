@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 /**
- * Unit test for Day 2 of AOC 2021.
+ * Unit test for Day 3 of AOC 2021.
  */
 public class Day03Test {
 

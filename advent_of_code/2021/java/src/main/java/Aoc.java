@@ -17,10 +17,10 @@ public class Aoc {
       System.out.printf("Part A: %s\nPart B: %s\n", day01.partOne(), day01.partTwo());
 
       Day02 day02 = new Day02("day02.txt");
-      System.out.printf("Part A: %s\nPart B: %s", day02.partOne(), day02.partTwo());
+      System.out.printf("Part A: %s\nPart B: %s\n", day02.partOne(), day02.partTwo());
 
       Day03 day03 = new Day03("day03.txt");
-      System.out.printf("Part A: %s\nPart B: %s", day03.partOne(), day03.partTwo());
+      System.out.printf("Part A: %s\nPart B: %s\n", day03.partOne(), day03.partTwo());
     } catch (FileNotFoundException e) {
       System.out.println(e.getMessage());
     } catch (IOException e) {

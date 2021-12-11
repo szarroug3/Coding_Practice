@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Runs AOC day 3 problem.
- * https://adventofcode.com/2021/day/2
+ * https://adventofcode.com/2021/day/3
  */
 public class Day03 {
 
@@ -67,6 +67,61 @@ public class Day03 {
    * @return    result of life support and oxygen generator ratings multiplied together
    */
   public int partTwo() {
-    return 230;
+    ArrayList<String> oxygenGenerator = new ArrayList<>(this.data);
+    ArrayList<String> co2Scrubber = new ArrayList<>(this.data);
+
+    for (int i = 0; i < oxygenGenerator.get(0).length() && oxygenGenerator.size() > 1; i++) {
+      int zeroes =  0;
+      int ones = 0;
+      for (int j = 0; j < oxygenGenerator.size(); j++) {
+        if (oxygenGenerator.get(j).charAt(i) == '0') {
+          zeroes++;
+        } else {
+          ones++;
+        }
+      }
+
+      char value;
+      if (ones >= zeroes) {
+        value = '1';
+      } else {
+        value = '0';
+      }
+
+      for (int j = 0; j < oxygenGenerator.size(); j++) {
+        if (oxygenGenerator.get(j).charAt(i) != value) {
+          oxygenGenerator.remove(j);
+          j--;
+        }
+      }
+    }
+
+    for (int i = 0; i < co2Scrubber.get(0).length() && co2Scrubber.size() > 1; i++) {
+      int zeroes =  0;
+      int ones = 0;
+      for (int j = 0; j < co2Scrubber.size(); j++) {
+        if (co2Scrubber.get(j).charAt(i) == '0') {
+          zeroes++;
+        } else {
+          ones++;
+        }
+      }
+
+      char value;
+      if (zeroes <= ones) {
+        value = '0';
+      } else {
+        value = '1';
+      }
+
+      for (int j = 0; j < co2Scrubber.size(); j++) {
+        if (co2Scrubber.get(j).charAt(i) != value) {
+          co2Scrubber.remove(j);
+          j--;
+        }
+      }
+    }
+
+    return Integer.parseInt(oxygenGenerator.get(0), 2) * Integer.parseInt(co2Scrubber.get(0), 2);
   }
 }
