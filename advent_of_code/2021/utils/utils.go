@@ -14,3 +14,12 @@ func ConvertToInts(data []string) []int {
 
 	return values
 }
+
+func ConvertAllToInts(data [][]string) [][]int {
+	values := make([][]int, 0)
+	for _, value := range data {
+		values = append(values, ConvertToInts(value))
+	}
+
+	return values
+}
