@@ -8,11 +8,11 @@ import (
 	"utils/utils"
 )
 
-func PartA(result chan interface{}) {
+func PartA(data string, result chan interface{}) {
 	result <- "UPDATE THIS"
 }
 
-func PartB(result chan interface{}) {
+func PartB(data string, result chan interface{}) {
 	result <- "UPDATE THIS"
 }
 
@@ -34,8 +34,8 @@ func main() {
 	a := make(chan interface{})
 	b := make(chan interface{})
 
-	go PartA(a)
-	go PartB(b)
+	go PartA(data, a)
+	go PartB(data, b)
 
 	fmt.Println("Part A:", <-a)
 	fmt.Println("Part B:", <-b)
