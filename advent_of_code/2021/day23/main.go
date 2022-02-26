@@ -4,67 +4,152 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"os"
 	"utils/utils"
 )
 
-func Parse(data []string) [][]uint8 {
-	buckets := make([][]uint8, 0)
+var hallwayIndex map[uint8]int = map[uint8]int{65: 2, 66: 4, 67: 6, 68: 7}
+var roomIndex map[uint8]int = map[uint8]int{65: 0, 66: 1, 67: 2, 68: 3}
+
+func Parse(data []string) []Room {
+	rooms := make([]Room, 0)
+	roomType := uint8('A')
+	costs := map[uint8]int{65: 1, 66: 10, 67: 100, 68: 1000}
+
 	for i := 3; i <= 9; i += 2 {
-		buckets = append(buckets, []uint8{data[2][i], data[3][i]})
+		amphipods := make([]*Amphipod, 0)
+		needMoves := false
+
+		for j := 1; j <= 2; j++ {
+			if data[j][i] == roomType {
+				amphipods = append(amphipods, &Amphipod{kind: data[j][i], energy: costs[data[j][i]], home: true})
+			} else {
+				amphipods = append(amphipods, &Amphipod{kind: data[j][i], energy: costs[data[j][i]], home: false})
+				needMoves = true
+			}
+		}
+
+		if needMoves {
+			rooms = append(rooms, Room{kind: roomType, amphipods: amphipods})
+		}
+
+		roomType++
 	}
-	return buckets
+
+	return rooms
 }
 
-func PartA(buckets [][]uint8, result chan interface{}) {
-	costs := map[int]int{65: 1, 66: 10, 67: 100, 68: 1000}
-	final := map[int]int{0: 0, 1: 0, 2: 0, 3: 0}
+type Amphipod struct {
+	kind        uint8
+	home        bool
+	energy      int
+	destination int
+}
 
-	for i, bucket := range buckets {
-		for j := len(bucket) - 1; j >= 0; j-- {
-			value := int(bucket[j])
-			destination := value - 65
-			if i != destination {
-				break
+type Room struct {
+	kind      uint8
+	amphipods []*Amphipod
+}
+
+func Dijkstra() {
+
+}
+
+func MoveOutOfHallway(hallway []*Amphipod, rooms []Room, energy int) ([]*Amphipod, []Room, int) {
+	for {
+		movedOutOfHallway := false
+		for i, amphipod := range hallway {
+			if amphipod == nil {
+				continue
 			}
-			final[destination]++
+
+			var moved bool
+			moved, hallway, rooms, energy = CanMoveToRoom(i, hallway, rooms, energy)
+			if moved {
+				movedOutOfHallway = true
+				continue
+			}
+		}
+
+		if !movedOutOfHallway {
+			break
 		}
 	}
 
-	fmt.Println(final)
-	energy := 0
-	for i, bucket := range buckets {
-		move := false
-		for j := len(bucket) - 1; j >= 0; j-- {
-			value := int(bucket[j])
-			destination := value - 65
-			depth := 2 - final[destination]
-			if int(value)-65-i != 0 {
-				move = true
-				steps := 0
-				// move out of current room
-				steps += j + 1
-				// move across hallway
-				steps += 2 * int(math.Abs(float64(destination-i)))
-				// move into destination
-				steps += depth
+	return hallway, rooms, energy
+}
 
-				energy += steps * costs[value]
-				final[destination]++
-				fmt.Println("Moving", value, i, j, steps*costs[value], energy)
-			} else if move {
-				steps := (2 * (j + 1)) + 2
-				energy += steps * costs[value]
-				fmt.Println("Moving", value, i, j, steps*costs[value], energy)
-				final[destination]++
+func CanMoveToRoom(index int, hallway []*Amphipod, rooms []Room, energy int) (bool, []*Amphipod, []Room, int) {
+	amphipod := hallway[index]
+	destination := hallwayIndex[amphipod.kind]
+	room := rooms[roomIndex[amphipod.kind]]
+
+	left := index
+	right := destination
+	if index > destination {
+		left = destination
+		right = index
+	}
+
+	for i := left + 1; i <= right; i++ {
+		if hallway[index] != nil {
+			return false, hallway, rooms, energy
+		}
+		energy += amphipod.energy
+	}
+
+	for i := len(room.amphipods) - 1; i >= 0; i-- {
+		if room.amphipods[i] != nil {
+			if !room.amphipods[i].home {
+				return false, hallway, rooms, energy
 			}
+			continue
+		}
+
+		room.amphipods[i] = amphipod
+		amphipod.home = true
+		hallway[index] = nil
+		energy += (i + 1) * amphipod.energy
+		return true, hallway, rooms, energy
+	}
+
+	return false, hallway, rooms, energy
+}
+
+func SwapTopTwo(rooms []Room, energy int) ([]Room, int) {
+
+}
+
+func PartA(rooms []Room, result chan interface{}) {
+	energy := 0
+	hallway := make([]*Amphipod, 11)
+
+	for true {
+		changed := false
+		var newEnergy int
+		hallway, rooms, newEnergy = MoveOutOfHallway(hallway, rooms, energy)
+		if newEnergy != energy {
+			changed = true
+			energy = newEnergy
+		}
+
+		if !changed {
+			break
+		}
+	}
+
+	for _, amphipod := range hallway {
+		if amphipod != nil {
+			fmt.Println("Something's wrong")
+			fmt.Println(hallway)
+			fmt.Println(rooms)
+			break
 		}
 	}
 	result <- energy
 }
 
-func PartB(buckets [][]uint8, result chan interface{}) {
+func PartB(rooms []Room, result chan interface{}) {
 	result <- "UPDATE THIS"
 }
 
@@ -80,14 +165,13 @@ func main() {
 		return
 	}
 
-	buckets := Parse(data)
-	fmt.Println(buckets)
+	rooms := Parse(data)
 
 	a := make(chan interface{})
 	b := make(chan interface{})
 
-	go PartA(buckets, a)
-	go PartB(buckets, b)
+	go PartA(rooms, a)
+	go PartB(rooms, b)
 
 	fmt.Println("Part A:", <-a)
 	fmt.Println("Part B:", <-b)
