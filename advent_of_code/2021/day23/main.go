@@ -43,7 +43,7 @@ type Amphipod struct {
 	kind        uint8
 	home        bool
 	energy      int
-	destination int
+	// destination int
 }
 
 type Room struct {
@@ -116,15 +116,15 @@ func CanMoveToRoom(index int, hallway []*Amphipod, rooms []Room, energy int) (bo
 	return false, hallway, rooms, energy
 }
 
-func SwapTopTwo(rooms []Room, energy int) ([]Room, int) {
+// func SwapTopTwo(rooms []Room, energy int) ([]Room, int) {
 
-}
+// }
 
 func PartA(rooms []Room, result chan interface{}) {
 	energy := 0
 	hallway := make([]*Amphipod, 11)
 
-	for true {
+	for {
 		changed := false
 		var newEnergy int
 		hallway, rooms, newEnergy = MoveOutOfHallway(hallway, rooms, energy)
