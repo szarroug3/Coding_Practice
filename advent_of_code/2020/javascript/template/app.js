@@ -19,6 +19,9 @@ async function partB(data) {
 async function main() {
   try {
     var data = readFile();
+
+    // TODO: REMOVE THIS
+    console.log(data);
   } catch (error) {
     console.log(error.message);
     process.exit();
