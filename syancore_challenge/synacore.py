@@ -17,7 +17,6 @@ class VirtualMachineException(Exception):
 class VirtualMachine:
     def __init__(self, binary):
         self.registers = [0] * 8
-        self.registers[7] = 1
         self.stack = []
         self.index = 0
         self.done = False
@@ -25,6 +24,7 @@ class VirtualMachine:
         self.print_save_newline = True
         self.print_input = False
         self.read_binary_file(binary)
+        self.read_disassembled()
 
     def read_binary_file(self, filename):
         if not os.path.exists(filename):
@@ -71,9 +71,23 @@ class VirtualMachine:
         self.output = filename
 
     def memory_hack(self):
+        # don't check register 8 for 0 value during self-test
         self.data[521] = 21
         self.data[522] = 21
         self.data[523] = 21
+
+        # don't call the teleporter confirmation process
+        self.data[5489] = 21
+        self.data[5490] = 21
+
+        # don't jump to the do nothing function
+        self.data[5491] = 21
+        self.data[5492] = 21
+        self.data[5493] = 21
+        self.data[5494] = 21
+
+        # set register 8 to the result from the ackermann function
+        self.registers[7] = 25734
 
     def disassemble(self, filename):
         if not os.path.exists(filename):
@@ -112,6 +126,37 @@ class VirtualMachine:
                     index += 1
                 f.write('\n')
 
+    def read_disassembled(self):
+        self.disassembled = {}
+        with open('disassembled.asm') as f:
+            curr = f.readline().strip()
+            while curr:
+                curr = curr.split(' ')
+                if len(curr) < 5:
+                    curr.extend([''] * (5-len(curr)))
+                self.disassembled[int(curr[0][:-1])] = ' '.join(value.rjust(5)
+                                                                for value in curr[1:])
+                curr = f.readline().strip()
+
+    def log(self, index=None):
+        if not index:
+            index = self.index
+
+        with open('log.txt', 'a') as f:
+            line = str(self.count).rjust(5)
+            line += str(index).rjust(5)
+            line += ' '
+            line += self.disassembled[index]
+            line += ' ['
+            line += ' '.join(str(register).rjust(5)
+                             for register in self.registers)
+            line += '] ['
+            line += ' '.join(str(item).rjust(5) for item in self.stack)
+            line += ']'
+            print(line, end='')
+            f.write(line + '\n')
+        input()
+
     def execute(self, save, output):
         opcodes = {
             0: self.halt, 1: self.set, 2: self.push, 3: self.pop, 4: self.eq, 5: self.gt,
@@ -123,34 +168,13 @@ class VirtualMachine:
         self.setup_output_file(output)
         self.memory_hack()
 
-        disassembled = {}
-        with open('disassembled.asm') as f:
-            curr = f.readline().strip()
-            while curr:
-                curr = curr.split(' ')
-                if len(curr) < 5:
-                    curr.extend([''] * (5-len(curr)))
-                disassembled[int(curr[0][:-1])] = ' '.join(value.rjust(5)
-                                                           for value in curr[1:])
-                curr = f.readline().strip()
+        if os.path.exists('log.txt'):
+            os.remove('log.txt')
 
-        os.remove('log.txt')
         self.count = 0
         while not self.done:
-            if self.count > 922456:
-                with open('log.txt', 'a') as f:
-                    line = str(self.index).rjust(5)
-                    line += ' '
-                    line += disassembled[self.index]
-                    line += ' ['
-                    line += ' '.join(str(register).rjust(5)
-                                     for register in self.registers)
-                    line += '] ['
-                    line += ' '.join(str(item).rjust(5) for item in self.stack)
-                    line += ']'
-                    print(line, end='')
-                    f.write(line + '\n')
-                input()
+            if self.index >= 6027:
+                self.log()
             if self.index >= len(self.data):
                 raise VirtualMachineException('Invalid index')
 
@@ -430,6 +454,7 @@ class VirtualMachine:
         if len(self.input) == 0:
             self.print_input = False
             self.input = input('> ') + '\n'
+
             with open(self.output, 'a') as f:
                 f.write(self.input)
         elif self.print_input:
