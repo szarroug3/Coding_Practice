@@ -19,3 +19,11 @@ module.exports.findFactors = (x) => {
   }
   return values;
 };
+
+module.exports.getFactorial = (x) => {
+  let value = BigInt(2);
+  for (let i = 3; i <= x; i++) {
+    value *= BigInt(i);
+  }
+  return value;
+};
