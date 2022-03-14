@@ -38,7 +38,7 @@ async function main() {
     process.exit();
   }
 
-  answers = await Promise.all([partA(data), partB(data)])
+  let answers = await Promise.all([partA(data), partB(data)])
     .then((answers) => {
       console.log(`Part A: ${answers[0]}`);
       console.log(`Part B: ${answers[1]}`);

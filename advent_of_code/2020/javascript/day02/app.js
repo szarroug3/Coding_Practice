@@ -2,10 +2,8 @@
 
 const { readFile } = require('../utils/input');
 
-function onResolve(results) {}
-
 async function partA(data) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let count = 0;
     data.forEach((element) => {
       let matches = element.match(/(\d+)-(\d+) (.*): (.*)/);
@@ -27,7 +25,7 @@ async function partA(data) {
 }
 
 async function partB(data) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let count = 0;
     data.forEach((element) => {
       let matches = element.match(/(\d+)-(\d+) (.*): (.*)/);
@@ -57,7 +55,7 @@ async function main() {
     process.exit();
   }
 
-  answers = await Promise.all([partA(data), partB(data)])
+  let answers = await Promise.all([partA(data), partB(data)])
     .then((answers) => {
       console.log(`Part A: ${answers[0]}`);
       console.log(`Part B: ${answers[1]}`);
