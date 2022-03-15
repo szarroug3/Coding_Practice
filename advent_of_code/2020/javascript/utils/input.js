@@ -13,7 +13,7 @@ function readFile(
     throw new Error('Only one input argument expected.');
   }
 
-  let data = fs.readFileSync(process.argv[2], 'utf8');
+  let data = fs.readFileSync(process.argv[2], 'utf8').trim();
   if (separator == null) {
     return data;
   }
