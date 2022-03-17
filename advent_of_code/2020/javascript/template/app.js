@@ -3,13 +3,13 @@
 const { readFile } = require('../utils/input');
 
 async function partA(data) {
-  return new Promise((resolve, reject) => {
-    reject('UPDATE THIS');
+  return new Promise((resolve) => {
+    resolve('UPDATE THIS');
   });
 }
 
 async function partB(data) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     resolve('UPDATE THIS');
   });
 }
