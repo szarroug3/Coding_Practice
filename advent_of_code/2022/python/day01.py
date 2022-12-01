@@ -13,6 +13,7 @@ def parse(data):
             curr = []
             continue
         curr.append(int(line))
+    elves.append(curr)
 
     return elves
 
