@@ -1,8 +1,8 @@
 # !/bin/python3
 
+import inspect
 import os
 import sys
-import inspect
 
 
 def read_input(val_type=None, separator=None, ignore_empty=True, fname=None):
