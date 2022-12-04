@@ -5,21 +5,22 @@ import sys
 import inspect
 
 
-def read_input(val_type=None, separator=None, ignore_empty=True):
-    if len(sys.argv) > 1:
-        fname = sys.argv[1]
-        if not os.path.exists(fname):
-            if len(sys.argv) == 2:
+def read_input(val_type=None, separator=None, ignore_empty=True, fname=None):
+    if not fname:
+        if len(sys.argv) > 1:
+            fname = sys.argv[1]
+            if not os.path.exists(fname):
+                if len(sys.argv) == 2:
+                    if val_type:
+                        return val_type(sys.argv[1])
+                    return sys.argv[1]
                 if val_type:
-                    return val_type(sys.argv[1])
-                return sys.argv[1]
-            if val_type:
-                return [val_type(value) for value in sys.argv[1:]]
-            return sys.argv[1:]
-    else:
-        frame = inspect.stack()[1]
-        module = inspect.getmodule(frame[0])
-        fname = '{0}input.txt'.format(os.path.splitext(module.__file__)[0])
+                    return [val_type(value) for value in sys.argv[1:]]
+                return sys.argv[1:]
+        else:
+            frame = inspect.stack()[1]
+            module = inspect.getmodule(frame[0])
+            fname = '{0}input.txt'.format(os.path.splitext(module.__file__)[0])
 
     if not os.path.exists(fname):
         return
