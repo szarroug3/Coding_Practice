@@ -2,8 +2,8 @@
 # https://adventofcode.com/2022/day/5
 
 import re
-
 from copy import deepcopy
+
 from utils import read_input
 
 
