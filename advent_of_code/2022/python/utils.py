@@ -34,6 +34,8 @@ def read_input(val_type=None, separator=None, ignore_empty=True, fname=None):
                 line = line.replace('\n', '').replace('\r', '')
             if separator:
                 values = line.split(separator)
+            elif separator == '':
+                values = list(line)
             else:
                 values = line
 

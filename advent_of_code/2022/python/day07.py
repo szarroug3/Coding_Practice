@@ -1,7 +1,6 @@
 # !/bin/python3
 # https://adventofcode.com/2022/day/7
 
-import json
 from utils import read_input
 
 
