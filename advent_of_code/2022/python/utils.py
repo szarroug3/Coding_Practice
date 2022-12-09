@@ -40,7 +40,7 @@ def read_input(val_type=None, separator=None, ignore_empty=True, fname=None):
                 values = line
 
             if val_type:
-                if type(values) is list:
+                if type(values) is list and not callable(val_type):
                     values = [val_type(value) for value in values]
                 else:
                     values = [val_type(values)]
