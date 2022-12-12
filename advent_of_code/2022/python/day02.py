@@ -55,7 +55,7 @@ def part_b(strategy):
 
 
 if __name__ == '__main__':
-    strategy = read_input(separator=' ')
+    strategy = read_input(line_delimiter=' ')
 
     print('part a:', part_a(strategy))
     print('part b:', part_b(strategy))

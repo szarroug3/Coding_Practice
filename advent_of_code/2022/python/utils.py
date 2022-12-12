@@ -5,7 +5,7 @@ import os
 import sys
 
 
-def read_input(val_type=None, separator=None, ignore_empty=True, fname=None):
+def read_input(val_type=None, delimiter='\n', line_delimiter=None, ignore_empty=True, line_ignore_empty=True, fname=None):
     if not fname:
         if len(sys.argv) > 1:
             fname = sys.argv[1]
@@ -27,20 +27,30 @@ def read_input(val_type=None, separator=None, ignore_empty=True, fname=None):
 
     with open(fname) as f:
         inp = []
-        for line in f.readlines():
+        for line in f.read().split(delimiter):
             if ignore_empty:
                 line = line.strip()
             else:
                 line = line.replace('\n', '').replace('\r', '')
-            if separator:
-                values = line.split(separator)
-            elif separator == '':
+
+            if ignore_empty and line == '':
+                continue
+
+            if line_delimiter:
+                values = line.split(line_delimiter)
+            elif line_delimiter == '':
                 values = list(line)
             else:
                 values = line
 
+            if line_ignore_empty:
+                if type(values) is list:
+                    values = [value.strip() for value in values]
+                else:
+                    values = values.strip()
+
             if val_type:
-                if type(values) is list and not callable(val_type):
+                if type(values) is list and type(val_type) == type:
                     values = [val_type(value) for value in values]
                 else:
                     values = [val_type(values)]

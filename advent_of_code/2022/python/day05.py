@@ -22,7 +22,8 @@ def parse(procedure):
 
         if line.startswith('m'):
             match = move_pattern.search(line)
-            movements.append([int(match.group(1)), int(match.group(2)) - 1, int(match.group(3)) - 1])
+            movements.append([int(match.group(1)), int(
+                match.group(2)) - 1, int(match.group(3)) - 1])
             continue
 
         match = crate_pattern.findall(line)
@@ -49,7 +50,8 @@ def part_b(crates, movements):
 
 
 if __name__ == '__main__':
-    crates, movements = parse(read_input(ignore_empty=False))
+    crates, movements = parse(read_input(
+        ignore_empty=False, line_ignore_empty=False))
 
     print('part a:', part_a(deepcopy(crates), movements))
     print('part b:', part_b(deepcopy(crates), movements))

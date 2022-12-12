@@ -66,7 +66,7 @@ def part_b(commands):
 
 
 if __name__ == '__main__':
-    commands = read_input(separator=' ', val_type=convert_values)
+    commands = read_input(line_delimiter=' ', val_type=convert_values)
 
     print('part a:', part_a(commands))
     print('part b:', part_b(commands))

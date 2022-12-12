@@ -69,7 +69,7 @@ def part_b(trees):
 
 
 if __name__ == '__main__':
-    trees = read_input(separator='', val_type=int)
+    trees = read_input(line_delimiter='', val_type=int)
 
     print('part a:', part_a(trees))
     print('part b:', part_b(trees))

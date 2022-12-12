@@ -52,7 +52,7 @@ def part_b(sections):
 
 
 if __name__ == '__main__':
-    sections = parse(read_input(separator=','))
+    sections = parse(read_input(line_delimiter=',',))
 
     print('part a:', part_a(sections))
     print('part b:', part_b(sections))

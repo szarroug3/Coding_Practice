@@ -98,7 +98,7 @@ def part_b(movements):
 
 
 if __name__ == '__main__':
-    movements = read_input(separator=' ', val_type=convert_values)
+    movements = read_input(line_delimiter=' ', val_type=convert_values)
 
     print('part a:', part_a(movements))
     print('part b:', part_b(movements))
