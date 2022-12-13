@@ -4,20 +4,6 @@
 from utils import read_input
 
 
-def parse(data):
-    elves = []
-    curr = []
-    for line in data:
-        if line == '':
-            elves.append(curr)
-            curr = []
-            continue
-        curr.append(int(line))
-    elves.append(curr)
-
-    return elves
-
-
 def get_totals(elves):
     totals = []
     for elf in elves:
@@ -35,7 +21,8 @@ def part_b(elves):
 
 
 if __name__ == '__main__':
-    elves = parse(read_input())
+    elves = read_input(delimiter='\n\n', line_delimiter='\n',
+                       val_type=int, keep_single_item_list=True)
     totals = get_totals(elves)
 
     print('part a:', part_a(totals))

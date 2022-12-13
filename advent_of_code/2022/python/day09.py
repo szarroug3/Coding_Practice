@@ -6,6 +6,7 @@ from utils import read_input
 
 
 def convert_values(line):
+    line = line.split(' ')
     return line[0], int(line[1])
 
 
@@ -82,7 +83,7 @@ def part_b(movements):
     visited = defaultdict(list)
 
     for direction, steps in movements:
-        for step in range(steps):
+        for _ in range(steps):
             h_row, h_column = functions[direction](h_row, h_column)
             prev_row, prev_column = h_row, h_column
 
@@ -98,7 +99,7 @@ def part_b(movements):
 
 
 if __name__ == '__main__':
-    movements = read_input(line_delimiter=' ', val_type=convert_values)
+    movements = read_input(val_type=convert_values)
 
     print('part a:', part_a(movements))
     print('part b:', part_b(movements))

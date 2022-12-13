@@ -5,57 +5,71 @@ import os
 import sys
 
 
-def read_input(val_type=None, delimiter='\n', line_delimiter=None, ignore_empty=True, line_ignore_empty=True, fname=None):
-    if not fname:
-        if len(sys.argv) > 1:
-            fname = sys.argv[1]
-            if not os.path.exists(fname):
-                if len(sys.argv) == 2:
-                    if val_type:
-                        return val_type(sys.argv[1])
-                    return sys.argv[1]
-                if val_type:
-                    return [val_type(value) for value in sys.argv[1:]]
-                return sys.argv[1:]
-        else:
-            frame = inspect.stack()[1]
-            module = inspect.getmodule(frame[0])
-            fname = '{0}input.txt'.format(os.path.splitext(module.__file__)[0])
+def get_filename(fname):
+    if fname:
+        return fname
+
+    if len(sys.argv) > 1:
+        return sys.argv[1]
+    frame = inspect.stack()[2]
+    fname = frame[0].f_code.co_filename
+    return '{0}input.txt'.format(os.path.splitext(fname)[0])
+
+
+def strip_line(line, ignore_empty):
+    if ignore_empty:
+        return line.strip()
+    return line.replace('\n', '').replace('\r', '')
+
+
+def split_line(line, line_delimiter):
+    if line_delimiter:
+        return line.split(line_delimiter)
+    if line_delimiter == '':
+        return list(line)
+    return line
+
+
+def strip_values(values, line_ignore_empty):
+    if not line_ignore_empty:
+        return values
+    if type(values) is list:
+        return [value.strip() for value in values]
+    return values.strip()
+
+
+def convert_values(values, val_type):
+    if not val_type:
+        return values
+
+    if type(values) is list:
+        if type(val_type) is list:
+            conversions = zip(val_type, values)
+            return [t(value) if t else value for t, value in conversions]
+        return [val_type(value) for value in values]
+    return [val_type(values)]
+
+
+def read_input(val_type=None, delimiter='\n', line_delimiter=None, ignore_empty=True, line_ignore_empty=True, fname=None, keep_single_item_list=False):
+    fname = get_filename(fname)
 
     if not os.path.exists(fname):
+        print(f'File {fname} doesn\'t exist')
         return
 
     with open(fname) as f:
         inp = []
         for line in f.read().split(delimiter):
-            if ignore_empty:
-                line = line.strip()
-            else:
-                line = line.replace('\n', '').replace('\r', '')
+            line = strip_line(line, ignore_empty)
 
             if ignore_empty and line == '':
                 continue
 
-            if line_delimiter:
-                values = line.split(line_delimiter)
-            elif line_delimiter == '':
-                values = list(line)
-            else:
-                values = line
+            values = split_line(line, line_delimiter)
+            values = strip_values(values, line_ignore_empty)
+            values = convert_values(values, val_type)
 
-            if line_ignore_empty:
-                if type(values) is list:
-                    values = [value.strip() for value in values]
-                else:
-                    values = values.strip()
-
-            if val_type:
-                if type(values) is list and type(val_type) == type:
-                    values = [val_type(value) for value in values]
-                else:
-                    values = [val_type(values)]
-
-            if len(values) == 1:
+            if len(values) == 1 and not keep_single_item_list:
                 values = values[0]
 
             inp.append(values)

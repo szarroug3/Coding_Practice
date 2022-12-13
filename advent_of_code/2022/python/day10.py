@@ -5,6 +5,7 @@ from utils import read_input
 
 
 def convert_values(line):
+    line = line.split(' ')
     if len(line) == 1:
         return [line[0]]
     return line[0], int(line[1])
@@ -66,7 +67,7 @@ def part_b(commands):
 
 
 if __name__ == '__main__':
-    commands = read_input(line_delimiter=' ', val_type=convert_values)
+    commands = read_input(val_type=convert_values)
 
     print('part a:', part_a(commands))
     print('part b:', part_b(commands))
