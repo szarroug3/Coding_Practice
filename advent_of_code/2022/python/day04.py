@@ -9,7 +9,7 @@ def parse(sections):
     for pair in sections:
         curr = []
         for elf in pair:
-            curr.append([int(x) for x in elf.split('-')])
+            curr.append([int(x) for x in elf.split("-")])
         data.append(curr)
 
     return data
@@ -51,8 +51,12 @@ def part_b(sections):
     return total
 
 
-if __name__ == '__main__':
-    sections = parse(read_input(line_delimiter=',',))
+if __name__ == "__main__":
+    sections = parse(
+        read_input(
+            line_delimiter=",",
+        )
+    )
 
-    print('part a:', part_a(sections))
-    print('part b:', part_b(sections))
+    print("part a:", part_a(sections))
+    print("part b:", part_b(sections))

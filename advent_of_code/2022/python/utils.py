@@ -5,27 +5,32 @@ import os
 import sys
 
 
-def get_filename(fname):
+def get_filename(fname, sample, parent):
     if fname:
         return fname
 
-    if len(sys.argv) > 1:
+    if len(sys.argv) == 2:
         return sys.argv[1]
-    frame = inspect.stack()[2]
-    fname = frame[0].f_code.co_filename
-    return '{0}input.txt'.format(os.path.splitext(fname)[0])
+
+    if not parent:
+        frame = inspect.stack()[2]
+        parent = frame[0].f_code.co_filename
+
+    if sample:
+        return '{0}sample{1}.txt'.format(os.path.splitext(parent)[0], sample)
+    return '{0}input.txt'.format(os.path.splitext(parent)[0])
 
 
 def strip_line(line, ignore_empty):
     if ignore_empty:
         return line.strip()
-    return line.replace('\n', '').replace('\r', '')
+    return line.replace("\n", "").replace("\r", "")
 
 
 def split_line(line, line_delimiter):
     if line_delimiter:
         return line.split(line_delimiter)
-    if line_delimiter == '':
+    if line_delimiter == "":
         return list(line)
     return line
 
@@ -50,11 +55,21 @@ def convert_values(values, val_type):
     return [val_type(values)]
 
 
-def read_input(val_type=None, delimiter='\n', line_delimiter=None, ignore_empty=True, line_ignore_empty=True, fname=None, keep_single_item_list=False):
-    fname = get_filename(fname)
+def read_input(
+    val_type=None,
+    delimiter="\n",
+    line_delimiter=None,
+    ignore_empty=True,
+    line_ignore_empty=True,
+    fname=None,
+    keep_single_item_list=False,
+    sample=None,
+    parent=None,
+):
+    fname = get_filename(fname, sample, parent)
 
     if not os.path.exists(fname):
-        print(f'File {fname} doesn\'t exist')
+        print(f"File {fname} doesn't exist")
         return
 
     with open(fname) as f:
@@ -62,7 +77,7 @@ def read_input(val_type=None, delimiter='\n', line_delimiter=None, ignore_empty=
         for line in f.read().split(delimiter):
             line = strip_line(line, ignore_empty)
 
-            if ignore_empty and line == '':
+            if ignore_empty and line == "":
                 continue
 
             values = split_line(line, line_delimiter)

@@ -20,10 +20,11 @@ def part_b(elves):
     return sum(elves[:3])
 
 
-if __name__ == '__main__':
-    elves = read_input(delimiter='\n\n', line_delimiter='\n',
-                       val_type=int, keep_single_item_list=True)
+if __name__ == "__main__":
+    elves = read_input(
+        delimiter="\n\n", line_delimiter="\n", val_type=int, keep_single_item_list=True
+    )
     totals = get_totals(elves)
 
-    print('part a:', part_a(totals))
-    print('part b:', part_b(totals))
+    print("part a:", part_a(totals))
+    print("part b:", part_b(totals))

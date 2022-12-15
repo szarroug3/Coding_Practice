@@ -6,29 +6,27 @@ from utils import read_input
 
 
 def convert_values(line):
-    line = line.split(' ')
+    line = line.split(" ")
     return line[0], int(line[1])
 
 
 def up(row, column):
-    return row-1, column
+    return row - 1, column
 
 
 def down(row, column):
-    return row+1, column
+    return row + 1, column
 
 
 def left(row, column):
-    return row, column-1
+    return row, column - 1
 
 
 def right(row, column):
-    return row, column+1
+    return row, column + 1
 
 
-functions = {
-    'U': up, 'D': down, 'L': left, 'R': right
-}
+functions = {"U": up, "D": down, "L": left, "R": right}
 
 
 def follow(h_row, h_column, t_row, t_column):
@@ -98,8 +96,8 @@ def part_b(movements):
     return count
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     movements = read_input(val_type=convert_values)
 
-    print('part a:', part_a(movements))
-    print('part b:', part_b(movements))
+    print("part a:", part_a(movements))
+    print("part b:", part_b(movements))

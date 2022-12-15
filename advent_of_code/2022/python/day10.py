@@ -5,21 +5,21 @@ from utils import read_input
 
 
 def convert_values(line):
-    line = line.split(' ')
+    line = line.split(" ")
     if len(line) == 1:
         return [line[0]]
     return line[0], int(line[1])
 
 
 def noop(x, command, cycle):
-    return x, cycle+1
+    return x, cycle + 1
 
 
 def addx(x, command, cycle):
-    return x+command[1], cycle+2
+    return x + command[1], cycle + 2
 
 
-functions = {'noop': noop, 'addx': addx}
+functions = {"noop": noop, "addx": addx}
 
 
 def part_a(commands):
@@ -37,7 +37,7 @@ def part_a(commands):
         if mod == 0:
             signal_strength += x * cycle
         elif mod < prev_mod:
-            signal_strength += prev_x * (cycle-mod)
+            signal_strength += prev_x * (cycle - mod)
 
         prev_x = x
         prev_mod = mod
@@ -58,16 +58,16 @@ def part_b(commands):
 
         for pos in positions:
             if pos == 0:
-                crt.append('')
-            crt[-1] += '#' if prev_x-1 <= pos <= prev_x+1 else '.'
+                crt.append("")
+            crt[-1] += "#" if prev_x - 1 <= pos <= prev_x + 1 else "."
 
         prev_x = x
         prev_cycle = cycle
-    return '\n' + '\n'.join(crt)
+    return "\n" + "\n".join(crt)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     commands = read_input(val_type=convert_values)
 
-    print('part a:', part_a(commands))
-    print('part b:', part_b(commands))
+    print("part a:", part_a(commands))
+    print("part b:", part_b(commands))

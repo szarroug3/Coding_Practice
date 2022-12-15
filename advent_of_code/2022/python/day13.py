@@ -109,9 +109,8 @@ def part_b(pairs):
     return (order.index(0) + 1) * (order.index(1) + 1)
 
 
-if __name__ == '__main__':
-    pairs = read_input(delimiter='\n\n', line_delimiter='\n',
-                       val_type=json.loads)
+if __name__ == "__main__":
+    pairs = read_input(delimiter="\n\n", line_delimiter="\n", val_type=json.loads)
 
-    print('part a:', part_a(pairs))
-    print('part b:', part_b(pairs))
+    print("part a:", part_a(pairs))
+    print("part b:", part_b(pairs))

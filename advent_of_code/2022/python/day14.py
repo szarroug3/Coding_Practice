@@ -8,8 +8,8 @@ from utils import read_input
 
 def parse(line):
     values = []
-    for coordinates in line.split(' -> '):
-        values.append([int(x) for x in coordinates.split(',')])
+    for coordinates in line.split(" -> "):
+        values.append([int(x) for x in coordinates.split(",")])
     return values
 
 
@@ -17,11 +17,11 @@ def get_cave(rocks):
     cave = defaultdict(lambda: defaultdict(lambda: False))
     for rock in rocks:
         for i in range(1, len(rock)):
-            cols = sorted([rock[i-1][0], rock[i][0]])
-            rows = sorted([rock[i-1][1], rock[i][1]])
+            cols = sorted([rock[i - 1][0], rock[i][0]])
+            rows = sorted([rock[i - 1][1], rock[i][1]])
 
-            for col in range(cols[0], cols[1]+1):
-                for row in range(rows[0], rows[1]+1):
+            for col in range(cols[0], cols[1] + 1):
+                for row in range(rows[0], rows[1] + 1):
                     cave[row][col] = True
 
     return cave
@@ -30,12 +30,12 @@ def get_cave(rocks):
 def find_next(cave, prev, lowest):
     row, col = prev[-1]
     while True:
-        if not cave[row+1][col]:
+        if not cave[row + 1][col]:
             row += 1
-        elif not cave[row+1][col-1]:
+        elif not cave[row + 1][col - 1]:
             row += 1
             col -= 1
-        elif not cave[row+1][col+1]:
+        elif not cave[row + 1][col + 1]:
             row += 1
             col += 1
         else:
@@ -59,7 +59,7 @@ def part_a(cave):
         last_row = prev.pop()[0]
         total += 1
 
-    return total-1
+    return total - 1
 
 
 def find_next_with_floor(cave, prev, floor):
@@ -71,16 +71,16 @@ def find_next_with_floor(cave, prev, floor):
         last_col = col
         append = True
 
-        if row+1 == floor:
+        if row + 1 == floor:
             prev.pop()
             break
 
-        if not cave[row+1][col]:
+        if not cave[row + 1][col]:
             row += 1
-        elif not cave[row+1][col-1]:
+        elif not cave[row + 1][col - 1]:
             row += 1
             col -= 1
-        elif not cave[row+1][col+1]:
+        elif not cave[row + 1][col + 1]:
             row += 1
             col += 1
         else:
@@ -110,9 +110,9 @@ def part_b(cave):
     return total
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     rocks = read_input(val_type=parse)
     cave = get_cave(rocks)
 
-    print('part a:', part_a(deepcopy(cave)))
-    print('part b:', part_b(deepcopy(cave)))
+    print("part a:", part_a(deepcopy(cave)))
+    print("part b:", part_b(deepcopy(cave)))
