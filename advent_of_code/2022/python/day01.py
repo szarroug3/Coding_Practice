@@ -22,7 +22,7 @@ def part_b(elves):
 
 if __name__ == "__main__":
     elves = read_input(
-        delimiter="\n\n", line_delimiter="\n", val_type=int, keep_single_item_list=True
+        delimiter="\n\n", line_delimiter="\n", val_type=int, keep_single_item_list=True, sample='a'
     )
     totals = get_totals(elves)
 

@@ -21,12 +21,6 @@ def get_filename(fname, sample, parent):
     return '{0}input.txt'.format(os.path.splitext(parent)[0])
 
 
-def strip_line(line, ignore_empty):
-    if ignore_empty:
-        return line.strip()
-    return line.replace("\n", "").replace("\r", "")
-
-
 def split_line(line, line_delimiter):
     if line_delimiter:
         return line.split(line_delimiter)
@@ -35,11 +29,11 @@ def split_line(line, line_delimiter):
     return line
 
 
-def strip_values(values, line_ignore_empty):
-    if not line_ignore_empty:
+def strip_values(values, ignore_empty):
+    if not ignore_empty:
         return values
     if type(values) is list:
-        return [value.strip() for value in values]
+        return [value.strip() for value in values if value]
     return values.strip()
 
 
@@ -60,7 +54,6 @@ def read_input(
     delimiter="\n",
     line_delimiter=None,
     ignore_empty=True,
-    line_ignore_empty=True,
     fname=None,
     keep_single_item_list=False,
     sample=None,
@@ -75,13 +68,11 @@ def read_input(
     with open(fname) as f:
         inp = []
         for line in f.read().split(delimiter):
-            line = strip_line(line, ignore_empty)
-
             if ignore_empty and line == "":
                 continue
 
             values = split_line(line, line_delimiter)
-            values = strip_values(values, line_ignore_empty)
+            values = strip_values(values, ignore_empty)
             values = convert_values(values, val_type)
 
             if len(values) == 1 and not keep_single_item_list:
