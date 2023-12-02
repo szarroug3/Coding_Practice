@@ -13,16 +13,10 @@ const partA = () => {
   }, 0);
 }
 
-const reverse = (str) => {
-  return str.split('').reverse().join('');
-};
-
 const partB = () => {
   const words = "one|two|three|four|five|six|seven|eight|nine"
-  const backwords = reverse(words);
-
-  const re = new RegExp(`[0-9]|${words}`, 'g')
-  const backwordsRe = new RegExp(`[0-9]|${backwords}`, 'g')
+  const firstRe = new RegExp(`[0-9]|${words}`, 'g')
+  const lastRe = new RegExp(`.*([0-9]|${words}).*$`, 'g')
 
   const convert = {
     'one': 1,
@@ -37,17 +31,18 @@ const partB = () => {
   }
 
   return data.reduce((total, line) => {
-    const matches = line.match(re);
-    const backwardsMatches = reverse(line).match(backwordsRe);
-    if (!matches | !backwardsMatches) {
+    const first = line.match(firstRe);
+    const last = lastRe.exec(line);
+    lastRe.lastIndex = 0;
+
+    if (!first | !last) {
       return total;
     }
 
-    const first = convert[matches[0]] ?? matches[0];
-    let last = backwardsMatches[0].split('').reverse().join('');
-    last = convert[last] ?? last;
+    const firstNum = convert[first[0]] ?? first[0];
+    const lastNum = convert[last[1]] ?? last[1];
 
-    return total + Number(`${first}${last}`);
+    return total + Number(`${firstNum}${lastNum}`);
   }, 0);
 };
 
