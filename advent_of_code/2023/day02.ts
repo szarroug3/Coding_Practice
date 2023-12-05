@@ -1,40 +1,42 @@
-import { readInput } from "./utils.js";
+import { readInput } from './utils';
 
 const data = readInput((data) => {
   const gameIdPattern = /Game (\d+):/g;
   const gameDataPattern = /(\d+) (red|green|blue)/g;
 
   return data.split('\n').reduce((games, game) => {
-    const gameId = Number(gameIdPattern.exec(game)[1]);
+    const gameId = Number(gameIdPattern.exec(game)![1]);
     gameIdPattern.lastIndex = 0;
 
     const gameData = game.split(': ')[1].split('; ').reduce((colors, iteration) => {
-      colors.push(Array.from(iteration.matchAll(gameDataPattern)).reduce((acc, match) => {
+      const processed = Array.from(iteration.matchAll(gameDataPattern)).reduce((acc, match) => {
         return {
           ...acc,
           [match[2]]: Number(match[1])
         }
-      }, {}));
+      }, {});
+
+      colors.push(processed);
       return colors;
-    }, []);
+    }, [] as Array<Record<string, number>>);
 
     return {
       ...games,
       [gameId]: gameData
     };
   }, {});
-});
+}) as Record<string, Record<string, number>[]>;
 
 const partA = () => {
-  const allowed = {
+  const allowed: Record<string, number> = {
     'red': 12,
     'green': 13,
     'blue': 14 
   }
 
   return Object.entries(data).reduce((total, [id, iterations]) => {
-    return total + (iterations.some((iteration) => {
-      return Object.keys(iteration).some((color) => {
+    return total + (iterations.some((iteration: Record<string, number>) => {
+      return Object.keys(iteration).some((color: string) => {
         return iteration[color] > allowed[color];
       });
     }) ? 0 : Number(id));

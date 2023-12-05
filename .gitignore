@@ -121,3 +121,8 @@ ENV/
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+########################
+#          JS          #
+########################
+node_modules

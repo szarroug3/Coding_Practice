@@ -1,4 +1,4 @@
-import { readInput } from './utils.js';
+import { readInput } from './utils';
 
 const partA = () => {
   const re = /[0-9]/g;
@@ -18,7 +18,7 @@ const partB = () => {
   const firstRe = new RegExp(`[0-9]|${words}`, 'g')
   const lastRe = new RegExp(`.*([0-9]|${words}).*$`, 'g')
 
-  const convert = {
+  const convert: Record<string, number> = {
     'one': 1,
     'two': 2,
     'three': 3,
@@ -35,7 +35,7 @@ const partB = () => {
     const last = lastRe.exec(line);
     lastRe.lastIndex = 0;
 
-    if (!first | !last) {
+    if (!first || !last) {
       return total;
     }
 
@@ -46,6 +46,6 @@ const partB = () => {
   }, 0);
 };
 
-const data = readInput((data) => data.split('\n'));
+const data = readInput((data) => data.split('\n')) as string[];
 console.log('Part A: ', partA());
 console.log('Part B: ', partB());

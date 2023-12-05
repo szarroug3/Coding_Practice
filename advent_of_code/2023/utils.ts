@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { argv } from 'process';
 
-const readInput = (fn=null) => {
+const readInput = <T>(fn?: (data: string) => T): string | T => {
   const day = argv[1].split('/').reverse()[0].split('.')[0];
   const defaultFilename = `${day}input.txt`;
   const filename = argv[2] ? argv[2] : defaultFilename;

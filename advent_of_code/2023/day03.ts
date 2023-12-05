@@ -1,10 +1,23 @@
-import { readInput } from "./utils.js";
+import { readInput } from './utils';
 
-const data = readInput((data) => data.split('\n'));
-  const numRe = /\d+/g;
+const data = readInput((data) => data.split('\n')) as string[];
+const numRe = /\d+/g;
 const symbolRe = /[^.0-9]/g;
+type SymbolType = {
+  row: number,
+  col: number,
+  length: number,
+  val: string,
+};
 
-const getSurroundingMatches = (re, { row, col, length=1 }) => {
+type PartType = {
+  row: number,
+  col: number,
+  length: number,
+  val: number,
+};
+
+const getSurroundingMatches = (re: RegExp, { row, col, length = 1 }: SymbolType | PartType) => {
   const matches = [];
 
   const startingRow = row > 0 ? row - 1 : row;
@@ -16,7 +29,7 @@ const getSurroundingMatches = (re, { row, col, length=1 }) => {
     const curr = [...data[i].slice(startingCol, endingCol).matchAll(re)].map((match) => {
       return {
         row: i,
-        col: startingCol + match.index,
+        col: startingCol + match.index!,
         val: match[0],
       }
     });
@@ -33,18 +46,17 @@ const partA = () => {
     if (!matches.length) {
       return acc;
     }
-
     return [...acc, ...matches.map((match) => {
       return {
         row: index,
-        col: match.index,
+        col: match.index!,
         length: match[0].length,
         val: Number(match[0])
       }
     })];
-  }, []);
+  }, [] as PartType[]);
 
-  return numbers.reduce((total, num) => {
+  return numbers.reduce((total: number, num: PartType) => {
     return total + (getSurroundingMatches(symbolRe, num).length ? num.val: 0);
   }, 0);
 };
@@ -60,15 +72,16 @@ const partB = () => {
     return [...acc, ...matches.map((match) => {
       return {
         row: index,
-        col: match.index,
+        col: match.index!,
         length: match[0].length,
         val: match[0]
       }
     })];
-  }, []);
+  }, [] as SymbolType[]);
 
   return symbols.reduce((total, symbol) => {
-    const matches = [...getSurroundingMatches(numRe, symbol)];
+    const matches = getSurroundingMatches(numRe, symbol);
+
     if (matches.length == 2) {
       return total + matches.reduce((acc, { row, col, val }) => {
         let newCol = col + val.length;
