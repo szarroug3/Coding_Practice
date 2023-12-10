@@ -20,7 +20,7 @@ const types = [
   [5]
 ];
 
-const wildMap: Record < number, number > = {
+const wildMap: Record<number, number> = {
   1: 1,
   2: 2,
   3: 3,
@@ -46,19 +46,17 @@ const getCounts = (hand: string[]) => {
       ...acc,
       [card]: (acc[card] ?? 0) + 1
     };
-  },
-    {} as Record < string,
-    number >);
+  }, {} as Record<string, number>);
 };
 
-const getType = (counts: Record < string, number >) => {
+const getType = (counts: Record<string, number>) => {
   const sorted = Object.values(counts).sort();
   return types.findIndex((handType) =>
     handType.length === sorted.length && handType.every((val, index) => val === sorted[index])
   ) + 1;
 };
 
-const getWildType = (counts: Record < string, number >) => {
+const getWildType = (counts: Record<string, number>) => {
   const jokers = counts.J;
   if (jokers === 5 || !('J' in counts)) {
     return getType(counts);
@@ -96,19 +94,13 @@ const data = readInput((data) => {
 
 const partA = (): number => {
   return data.sort((a, b) => a.value - b.value)
-  .reduce((acc, {
-    bid
-  }, index) => acc + (bid * (index + 1)), 0);
+    .reduce((acc, { bid }, index) => acc + (bid * (index + 1)), 0);
 };
 
 const partB = () => {
   return data.sort((a, b) => a.wildValue - b.wildValue)
-  .reduce((acc, {
-    bid
-  }, index) => acc + (bid * (index + 1)), 0);
+    .reduce((acc, { bid }, index) => acc + (bid * (index + 1)), 0);
 };
 
-console.log('Part A:',
-  partA());
-console.log('Part B:',
-  partB());
+console.log('Part A:', partA());
+console.log('Part B:', partB());
