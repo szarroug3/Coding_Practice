@@ -1,4 +1,4 @@
-import { readInput } from "./utils";
+import { readInput } from './utils';
 
 const data = readInput(data => data.split('\n').map(line => line.split(''))) as string[][];
 

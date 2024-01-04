@@ -1,4 +1,4 @@
-import { readInput } from "./utils";
+import { readInput } from './utils';
 
 const data = readInput((data) => {
   return data.split('\n\n').reduce((acc, pattern) => {
