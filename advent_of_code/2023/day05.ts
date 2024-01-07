@@ -23,8 +23,8 @@ const addMissingRanges = (index: number) => {
     const otherKey = mapNames[mapIndex + 1];
     maps[key].forEach((data, dataIndex) => {
       if (dataIndex === maps[key].length - 1) {
-        maps[key].push([data[index] + data[2], data[index] + data[2], Number.MAX_SAFE_INTEGER]);
-        backwardsMaps[otherKey].push([data[index] + data[2], data[index] + data[2], Number.MAX_SAFE_INTEGER]);
+        maps[key].push([data[index] + data[2], data[index] + data[2], Infinity]);
+        backwardsMaps[otherKey].push([data[index] + data[2], data[index] + data[2], Infinity]);
       }
 
       if (dataIndex === 0) {
