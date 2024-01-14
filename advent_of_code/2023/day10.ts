@@ -47,7 +47,7 @@ const countSurroundingPipes = (map: string[][], row: number, col: number) => {
   for (let direction of Object.keys(checks[pipe])) {
     const currRow = row + Number(offsets[direction][0]);
     const currCol = col + Number(offsets[direction][1]);
-    if (currRow >= 0 && currRow < map.length && currCol >= 0 && currCol < map[currRow].length) {
+    if (currRow >= 0 && currRow < map.length && currCol >= 0 && currCol < map[currRow].length && map[currRow][currCol] !== '.') {
       pipes.push([currRow, currCol]);
     }
   }
@@ -176,6 +176,7 @@ const findArea = (boundary: number[][]) => {
     area += (x0 * y1) - (x1 * y0);
   }
 
+  console.log(Math.abs(area / 2));
   return Math.abs(area / 2);
 }
 
@@ -186,5 +187,5 @@ const partB = () => {
   return Math.ceil(area - (boundary.length / 2) + 1);
 };
 
-console.log('Part A', partA());
-console.log('Part B', partB());
+console.log('Part A:', partA());
+console.log('Part B:', partB());
