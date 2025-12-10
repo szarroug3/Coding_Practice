@@ -3,4 +3,8 @@ name = "python"
 version = "0.1.0"
 description = "Advent of Code 2025"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "matplotlib>=3.10.7",
+    "mplcursors>=0.7",
+    "numpy>=2.3.5",
+]
