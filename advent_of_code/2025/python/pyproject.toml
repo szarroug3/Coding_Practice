@@ -7,4 +7,5 @@ dependencies = [
     "matplotlib>=3.10.7",
     "mplcursors>=0.7",
     "numpy>=2.3.5",
+    "z3-solver>=4.15.4.0",
 ]
