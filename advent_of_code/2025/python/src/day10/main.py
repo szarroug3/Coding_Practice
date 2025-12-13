@@ -124,8 +124,10 @@ def part_b(manual):
 
 def main():
     manual = process_input(read_input())
-    print(part_a_z3(manual))
-    print(part_b_z3(manual))
+    print('part a:', part_a(manual))
+    print('part b:', part_b(manual))
+    print('part a (z3):', part_a_z3(manual))
+    print('part b (z3):', part_b_z3(manual))
 
 
 main()

@@ -64,8 +64,8 @@ def part_b(ranges):
 
 def main():
     ranges = process_input(read_input())
-    print(part_a(ranges))
-    print(part_b(ranges))
+    print('part a:', part_a(ranges))
+    print('part b:', part_b(ranges))
 
 
 main()

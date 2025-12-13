@@ -61,8 +61,8 @@ def part_b(grid):
 
 def main():
     instructions = process_input(read_input())
-    print(part_a(instructions))
-    print(part_b(instructions))
+    print('part a:', part_a(instructions))
+    print('part b:', part_b(instructions))
 
 
 main()

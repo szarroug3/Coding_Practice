@@ -229,13 +229,13 @@ def main():
     draw = True
     points = process_input(read_input())
     areas = get_areas(points)
-    print(part_a(areas))
+    print('part a:', part_a(areas))
     if draw:
         fig, ax = create_plot_with_polygon(points)
         delay = 0.1 if len(areas) < 1000 else 0
-        print(part_b(areas, points, fig, ax, delay))
+        print('part b:', part_b(areas, points, fig, ax, delay))
     else:
-        print(part_b(areas, points))
+        print('part b:', part_b(areas, points))
 
     if draw:
         plt.ioff()

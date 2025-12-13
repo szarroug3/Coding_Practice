@@ -77,8 +77,8 @@ def part_b(ranges):
 def main():
     ranges, ingredients = process_input(read_input())
     merged = iterative_merge_ranges(ranges)
-    print(part_a(merged, ingredients))
-    print(part_b(merged))
+    print('part a:', part_a(merged, ingredients))
+    print('part b:', part_b(merged))
 
 
 main()

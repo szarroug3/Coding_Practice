@@ -99,8 +99,8 @@ def part_b(points, distances):
 def main():
     points = process_input(read_input())
     sorted_distances = get_sorted_distances(points)
-    print(part_a(sorted_distances))
-    print(part_b(points, sorted_distances))
+    print('part a:', part_a(sorted_distances))
+    print('part b:', part_b(points, sorted_distances))
 
 
 main()
